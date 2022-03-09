@@ -1,6 +1,7 @@
 {
   "name": "client",
   "private": true,
+  "types": "module",
   "version": "0.0.0",
   "scripts": {
     "dev": "vite",
@@ -11,14 +12,20 @@
     "@reduxjs/toolkit": "^1.8.0",
     "@types/axios": "^0.14.0",
     "@types/react-redux": "^7.1.23",
+    "@types/socket.io-client": "^3.0.0",
     "axios": "^0.26.0",
     "d3": "^7.3.0",
+    "faker": "^6.6.6",
+    "faker2": "^0.5.0",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
     "react-redux": "^7.2.6",
-    "sass": "^1.49.9"
+    "sass": "^1.49.9",
+    "socket.io-client": "^4.4.1"
   },
   "devDependencies": {
+    "@types/faker": "^6.6.9",
+    "@types/node": "^17.0.21",
     "@types/react": "^17.0.33",
     "@types/react-dom": "^17.0.10",
     "@vitejs/plugin-react": "^1.0.7",
