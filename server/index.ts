@@ -12,6 +12,9 @@ const PORT = process.env.PORT ||4000
 const app = express();
 app.use(express.json({limit:'2mb'}))
 app.use(cors())
+app.get('/',(req:express.Request, res: express.Response) => {
+    res.sendFile(__dirname + '/index.html');
+})
 const server = http.createServer(app);
 const io = new Server(
     server,{
@@ -26,13 +29,20 @@ data = {user: fullname, country:Object}
 */
 
 io.on('connection',(socket:Socket) =>{
-    console.log('new client connected');
+    console.log(`client ${socket.id} connected`);
+    io.emit('toApp',{id:socket.id, connected:true})
+    
     socket.on('toServer', (data:any)=>{
         console.log(`${data.user} from ${data.country?.name}`)
+        io.emit('toApp', data)
     })
+    
     socket.once('connection',()=>{console.log('device connected')})
 
-    socket.on('disconnect', ()=>console.log('client disconnected'))
+    socket.on('disconnect', ()=>{
+        console.log(`client ${socket.id} disconnected`)
+        io.emit('toApp',{id:socket.id, connected:false})
+    })
 })
 
 

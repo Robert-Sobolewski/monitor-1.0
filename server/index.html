@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DataApp</title>
+     <!-- add client library -->
+     <script src="https://cdn.socket.io/4.4.1/socket.io.min.js" integrity="sha384-fKnu0iswBIqkjxrhQCTZ7qlLHOFEgNkRmK2vaO/LbTZSXdJfAu6ewRBdwHPhBo/H" crossorigin="anonymous"></script>
+     <script src="https://cdnjs.cloudflare.com/ajax/libs/Faker/3.1.0/faker.min.js"></script>
+     <!-- handle events -->
+     <script type="text/javascript">
+        const socket = io();
+        let data = null
+
+      async  function   load(){
+            console.log('load working')
+            let n = document.body.querySelector('span');
+            const name = faker.name.findName();
+            console.log('name = ',name);
+            
+            data = await fetch('https://restcountries.com/v2/all')
+            .then( resp => resp.json())
+            let rnd = Math.floor( Math.random()* data.length)
+            console.log("data=", data[rnd])
+            n.innerHTML =`${name}, from ${data[rnd].name} , lat: {${data[rnd].latlng[0]}}, lon: {${data[rnd].latlng[1]}}`;
+            socket.emit('toServer',{user:name, country:data[rnd] })
+        }
+
+
+    </script>
+</head>
+<body onload="load()">
+    <h1>welcome in data App</h1>
+    <p>name: <span></span></p>
+
+
+
+    <!-- add client library -->
+    <script src="https://cdn.socket.io/4.4.1/socket.io.min.js" integrity="sha384-fKnu0iswBIqkjxrhQCTZ7qlLHOFEgNkRmK2vaO/LbTZSXdJfAu6ewRBdwHPhBo/H" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Faker/3.1.0/faker.min.js"></script>
+
+   
+
+</body>
+</html>
