@@ -1,0 +1,8 @@
+.home{
+    display:flex;
+
+}
+.home aside{
+    flex: 0.3;
+    height: 80vh;
+}

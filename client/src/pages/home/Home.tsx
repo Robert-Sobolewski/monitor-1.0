@@ -2,11 +2,17 @@ import React, { Fragment } from "react";
 import { useEffect, useState } from "react";
 import socketIOClient from "socket.io-client";
 import * as io from "socket.io-client";
-
+import "./Home.css";
 //import * as faker from "faker2";
 import faker from "faker2";
 import { useDispatch, useSelector } from "react-redux";
-import { addUser, getCountries, selectCountries } from "../../redux/userSlice";
+import {
+  addUser,
+  getCountries,
+  removeUser,
+  selectCountries,
+} from "../../redux/userSlice";
+import SideComp from "../../components/_side/SideComp";
 const Home = () => {
   const [count, setCount] = useState(Math.floor(Math.random() * 10));
   const dispatch = useDispatch();
@@ -26,20 +32,37 @@ const Home = () => {
   }, []);
   useEffect(() => {
     let tmp = JSON.parse(JSON.stringify(all));
-    tmp.push(data);
+    if (!tmp.includes(data)) {
+      tmp.push(data);
+      try {
+        if (data?.country) {
+          dispatch(addUser(data));
+        }
+        if (data?.connected == false) {
+          dispatch(removeUser(data));
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    }
+
     setAll(JSON.parse(JSON.stringify(tmp)));
   }, [data]);
   return (
     <Fragment>
       <div className="home">
-        <h3>home page</h3>
+        <SideComp />
         <ul>
-          {all.map((item) => {
+          {all.map((item, index) => {
             if (item !== null) {
               if (item?.country) {
-                return <li>{`${item.user} from ${item.country.name}`}</li>;
+                return (
+                  <li
+                    key={index}
+                  >{`${item.user} from ${item.country.name}`}</li>
+                );
               } else {
-                return <li>{JSON.stringify(item)}</li>;
+                return <li key={index}>{JSON.stringify(item)}</li>;
               }
             }
           })}

@@ -34,6 +34,7 @@ io.on('connection',(socket:Socket) =>{
     
     socket.on('toServer', (data:any)=>{
         console.log(`${data.user} from ${data.country?.name}`)
+        data.id = socket.id
         io.emit('toApp', data)
     })
     

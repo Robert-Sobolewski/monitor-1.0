@@ -1,0 +1,17 @@
+.map-page{
+    display: flex;
+}
+.map-page aside{
+    display: flex;
+}
+.map-page #map{
+    display: flex;
+     flex: 0.7; 
+    height: 90vh;
+    position: relative;
+}
+.map-page .leaflet-container{
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+}

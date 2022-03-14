@@ -1,0 +1,11 @@
+.side-comp{
+    flex: 0.3;
+    min-height: 90vh;
+    background-color: #c6e4e0;
+    margin: 0;
+    padding: 1em;
+    border: solid 1px green;
+}
+.side-comp aside{
+    min-height: 90vh;
+}

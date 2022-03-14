@@ -4,12 +4,12 @@ import axios from "axios";
 
 const init= {
     countries: null,
-    value:null
+    value:[]
 }
 interface IUserState{
     user:{
         countries: null|any,
-        value:null|any
+        value:any[]
     }
 }
 
@@ -25,7 +25,11 @@ const userSlice = createSlice({
     initialState: init,
     reducers:{
         addUser: (state, action:PayloadAction<any>)=>{
-            state.value = action.payload
+            state.value.push( action.payload)
+        },
+        removeUser:(state, action:PayloadAction<any>)=>{
+            const ind = state.value.findIndex( item => item.id === action.payload.id );
+            state.value.splice( ind,1);
         }
     },
     extraReducers: builder=>{
@@ -38,6 +42,6 @@ const userSlice = createSlice({
 
 
 export default userSlice.reducer;
-export const {addUser} = userSlice.actions;
+export const {addUser, removeUser} = userSlice.actions;
 export const selectUser = (state:IUserState)=> state.user.value;
 export const selectCountries = (state:IUserState) => state.user.countries;
