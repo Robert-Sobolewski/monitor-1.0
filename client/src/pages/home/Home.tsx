@@ -51,7 +51,7 @@ const Home = (props: any) => {
   return (
     <Fragment>
       <div className="home">
-        <SideComp loc="/home" />
+        <SideComp map={null} loc="/home" />
         <ul>
           {all.map((item, index) => {
             if (item !== null) {

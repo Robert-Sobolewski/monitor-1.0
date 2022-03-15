@@ -14,7 +14,7 @@ import { IInformation, selectData } from "../../redux/dataSlice";
 import { selectUser } from "../../redux/userSlice";
 import "./MapPage.css";
 const MapPage = () => {
-  const mapRef = useRef();
+  const mapRef = useRef(null);
   const { id } = useParams();
   const users = useSelector(selectUser);
   const [position, setPosition] = useState();
@@ -31,7 +31,7 @@ const MapPage = () => {
       locationfound(e) {
         console.log(currentUser?.country.latlng);
         setP(currentUser?.country.latlng);
-        console.log("p =", p);
+        if (null !== mapRef.current) console.log("mparef =", mapRef);
         map.flyTo(currentUser?.country.latlng, map.getZoom());
       },
     });
@@ -45,12 +45,13 @@ const MapPage = () => {
   useEffect(() => {
     let ind = data.findIndex((item) => item.id === id);
     setCurrentUser(data[ind]);
+    console.log("mapref=", mapRef.current);
   }, [id]);
   return (
     <Fragment>
       <div className="map-page">
-        <SideComp loc="/map" />
-        {/* <h3>Map Page</h3> */}
+        <SideComp map={mapRef} loc="/map" />
+
         <div id="map" className="col-md-10">
           <MapContainer ref={mapRef} center={[51.505, -0.09]} zoom={10}>
             <TileLayer
