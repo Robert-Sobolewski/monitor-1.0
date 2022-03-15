@@ -31,17 +31,19 @@ const SideComp = (props: any) => {
         <aside>
           <div className="list-group">
             {data.length > 0 &&
-              data.map((user, index) => (
-                <Link
-                  id={user.id}
-                  // onClick={(e) => handleClick(e, map, user)}
-                  key={index}
-                  to={`${location}/${user.id}`}
-                  className="list-group-item list-group-item-action"
-                >
-                  {user.user}
-                </Link>
-              ))}
+              data.map((user, index) =>
+                user.message == "" ? (
+                  <Link
+                    id={user.id}
+                    // onClick={(e) => handleClick(e, map, user)}
+                    key={index}
+                    to={`${location}/${user.id}`}
+                    className="list-group-item list-group-item-action"
+                  >
+                    {user.user}
+                  </Link>
+                ) : null
+              )}
           </div>
         </aside>
       </div>

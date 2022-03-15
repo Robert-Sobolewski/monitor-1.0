@@ -1,8 +1,25 @@
 .home{
     display:flex;
-
+    height: 90vh;
+    overflow:hidden;
 }
 .home aside{
     flex: 0.3;
     height: 80vh;
+}
+.home .chat-wrap{
+    flex:0.7;
+    height: 80vh;
+    overflow:auto;
+}
+.home .chat-wrap div:nth-of-type(even){
+    background: #c2c2c2;
+}
+.home .chat-wrap div dt{
+    position: relative;
+    margin-left: -3rem;
+    display:inline;
+}
+.home ul{
+    list-style-type: none;
 }

@@ -13,14 +13,14 @@ import {
   selectCountries,
 } from "../../redux/userSlice";
 import SideComp from "../../components/_side/SideComp";
+import { IInformation, selectData } from "../../redux/dataSlice";
 const Home = (props: any) => {
   const [count, setCount] = useState(Math.floor(Math.random() * 10));
   const dispatch = useDispatch();
-  // const countries: any[] | null = useSelector(selectCountries);
-  // const [country, setCountry] = useState<any[] | null>(null);
-  // const [name, setName] = useState<string | null>(null);
+  const [chat, setChat] = useState<IInformation[]>(null);
   const [data, setData] = useState(null);
   const [all, setAll] = useState<any[]>([]);
+  const servData = useSelector(selectData);
   useEffect(() => {
     // const socket = socketIOClient("http://localhost:4444");
     // socket.on("toApp", (d) => {
@@ -28,8 +28,9 @@ const Home = (props: any) => {
     //   let t1 = JSON.parse(JSON.stringify(all));
     //   t1.push(d);
     //   setAll(t1);
+    setChat(servData);
     // });
-  }, []);
+  }, [servData]);
   useEffect(() => {
     let tmp = JSON.parse(JSON.stringify(all));
     if (!tmp.includes(data)) {
@@ -52,21 +53,27 @@ const Home = (props: any) => {
     <Fragment>
       <div className="home">
         <SideComp map={null} loc="/home" />
-        <ul>
-          {all.map((item, index) => {
-            if (item !== null) {
-              if (item?.country) {
-                return (
-                  <li
-                    key={index}
-                  >{`${item.user} from ${item.country.name}`}</li>
-                );
-              } else {
-                return <li key={index}>{JSON.stringify(item)}</li>;
-              }
-            }
-          })}
-        </ul>
+        <div className="chat-wrap">
+          <dl>
+            {chat?.map(
+              (item: IInformation, index: number) =>
+                item.message !== "" ? (
+                  <div key={index}>
+                    <dt>
+                      <strong>{item.user}</strong>
+                    </dt>
+                    <dd>{item.message}</dd>
+                  </div>
+                ) : null
+              // <>
+              //   <dt>
+              //     <strong>{item.user}</strong>
+              //   </dt>
+              //   <dd>{item.message}</dd>
+              // </>;
+            )}
+          </dl>
+        </div>
       </div>
     </Fragment>
   );

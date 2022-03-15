@@ -10,6 +10,7 @@ const PORT = process.env.PORT ||4000
     id:string,
     user:string,
     country: object|null,
+    message: string,
     connected:boolean,
 }
 // create server instance
@@ -37,6 +38,7 @@ io.on('connection',(socket:Socket) =>{
     let data2Send:IInformation ={
         id: socket.id,
         user: "",
+        message:"",
         country:null,
         connected:true
     }
@@ -49,6 +51,7 @@ io.on('connection',(socket:Socket) =>{
         data.id = socket.id
         data2Send.user = data.user;
         data2Send.country = data.country
+        data2Send.message = data.message;
         io.emit('toApp', data2Send)
     })
     

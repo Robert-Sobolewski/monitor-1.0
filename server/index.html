@@ -12,35 +12,44 @@
      <script type="text/javascript">
         const socket = io();
         let data = null
+        let currentUser = {
+            user: "",
+            country: null,
+            message: ""
+        }
 
       async  function   load(){
-            console.log('load working')
             let n = document.body.querySelector('span');
             const name = faker.name.findName();
-            console.log('name = ',name);
+            //console.log('name = ',name);
             
             data = await fetch('https://restcountries.com/v2/all')
             .then( resp => resp.json())
             let rnd = Math.floor( Math.random()* data.length)
-            console.log("data=", data[rnd])
+            //console.log("data=", data[rnd])
             n.innerHTML =`${name}, from ${data[rnd].name} , lat: {${data[rnd].latlng[0]}}, lon: {${data[rnd].latlng[1]}}`;
-            socket.emit('toServer',{user:name, country:data[rnd] })
+            currentUser.user = name;
+            currentUser.country = data[rnd]
+            //socket.emit('toServer',{user:name, country:data[rnd] })
+            socket.emit('toServer',currentUser)
         }
 
-
+        function submitClick(){
+            let msg = document.body.querySelector('#message').value
+            console.log('msg= ',msg)
+            currentUser.message = msg;
+            document.getElementById('message').value = "";
+            socket.emit('toServer', currentUser);
+        }
     </script>
 </head>
 <body onload="load()">
     <h1>welcome in data App</h1>
     <p>name: <span></span></p>
+    <input type="text" name="message" id="message">
+    <button onclick="submitClick();">Submit</button>
 
 
-
-    <!-- add client library -->
-    <script src="https://cdn.socket.io/4.4.1/socket.io.min.js" integrity="sha384-fKnu0iswBIqkjxrhQCTZ7qlLHOFEgNkRmK2vaO/LbTZSXdJfAu6ewRBdwHPhBo/H" crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/Faker/3.1.0/faker.min.js"></script>
-
-   
 
 </body>
 </html>

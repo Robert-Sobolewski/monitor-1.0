@@ -9,6 +9,7 @@ import { ICountryDB } from "./userSlice";
 export interface IInformation{
     id:string,
     user:string,
+    message:string,
     country: ICountryDB|null,
     connected:boolean,
 }
