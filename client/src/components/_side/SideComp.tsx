@@ -1,53 +1,43 @@
-import React, { Fragment, useState } from "react";
-import { useSelector } from "react-redux";
-import { Link } from "react-router-dom";
+import React, { Fragment, useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { NavLink as Link, useLocation } from "react-router-dom";
+import { IInformation, selectData } from "../../redux/dataSlice";
 import { selectUser } from "../../redux/userSlice";
 import "./SideComp.css";
 const SideComp = (props: any) => {
   //const { position } = props;
   const users = useSelector(selectUser);
   const [cUser, setCUser] = useState(null);
+  const dispatch = useDispatch();
+  const data: IInformation[] = useSelector(selectData);
+  const location = props.loc; //useLocation();
+  useEffect(() => {
+    console.log("location path =", location);
+    console.log("location props", props.loc);
+  }, []);
   const handleClick = (e: React.MouseEvent) => {
     e.preventDefault();
     console.log(e.currentTarget.id);
     //position()
   };
+
   return (
     <Fragment>
       <div className="side-comp">
         <aside>
           <div className="list-group">
-            {users.length > 0 &&
-              users.map((user, index) => (
+            {data.length > 0 &&
+              data.map((user, index) => (
                 <Link
                   id={user.id}
                   // onClick={handleClick}
-                  key={user.id}
-                  to={`/map/${user.id}`}
+                  key={index}
+                  to={`${location}/${user.id}`}
                   className="list-group-item list-group-item-action"
                 >
                   {user.user}
                 </Link>
               ))}
-            {/* <a
-              href="#"
-              className="list-group-item list-group-item-action active"
-              aria-current="true"
-            >
-              The current link item
-            </a>
-            <a href="#" className="list-group-item list-group-item-action">
-              A second link item
-            </a>
-            <a href="#" className="list-group-item list-group-item-action">
-              A third link item
-            </a>
-            <a href="#" className="list-group-item list-group-item-action">
-              A fourth link item
-            </a>
-            <a className="list-group-item list-group-item-action disabled">
-              A disabled link item
-            </a> */}
           </div>
         </aside>
       </div>
