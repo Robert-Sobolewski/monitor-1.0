@@ -10,6 +10,7 @@ import {
 import { useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import SideComp from "../../components/_side/SideComp";
+import { IInformation, selectData } from "../../redux/dataSlice";
 import { selectUser } from "../../redux/userSlice";
 import "./MapPage.css";
 const MapPage = () => {
@@ -17,7 +18,8 @@ const MapPage = () => {
   const { id } = useParams();
   const users = useSelector(selectUser);
   const [position, setPosition] = useState();
-  const [currentUser, setCurrentUser] = useState(null);
+  const data: IInformation[] = useSelector(selectData);
+  const [currentUser, setCurrentUser] = useState<IInformation | null>(null);
 
   function LocationMarker() {
     const [p, setP] = useState(null);
@@ -27,26 +29,27 @@ const MapPage = () => {
         map.locate();
       },
       locationfound(e) {
+        console.log(currentUser?.country.latlng);
         setP(currentUser?.country.latlng);
-        map.flyTo(p, map.getZoom());
+        console.log("p =", p);
+        map.flyTo(currentUser?.country.latlng, map.getZoom());
       },
     });
     return p === null ? null : (
       <Marker position={p}>
-        <Popup>{`${currentUser.user} is here`}</Popup>
+        <Popup>{`${currentUser?.user} is here`}</Popup>
       </Marker>
     );
   }
 
   useEffect(() => {
-    let ind = users.findIndex((item) => item.id === id);
-    setCurrentUser(users[ind]);
-    let cuser = users[ind];
+    let ind = data.findIndex((item) => item.id === id);
+    setCurrentUser(data[ind]);
   }, [id]);
   return (
     <Fragment>
       <div className="map-page">
-        <SideComp />
+        <SideComp loc="/map" />
         {/* <h3>Map Page</h3> */}
         <div id="map" className="col-md-10">
           <MapContainer ref={mapRef} center={[51.505, -0.09]} zoom={10}>
@@ -55,8 +58,8 @@ const MapPage = () => {
               url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
             />
             <LocationMarker />
-            {users?.map((item) => (
-              <Marker position={item.country.latlng}>
+            {data?.map((item: IInformation) => (
+              <Marker key={item.id} position={item.country?.latlng}>
                 <Popup>{`${item.user} is here`}</Popup>
               </Marker>
             ))}

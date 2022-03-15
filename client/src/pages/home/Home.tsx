@@ -13,22 +13,22 @@ import {
   selectCountries,
 } from "../../redux/userSlice";
 import SideComp from "../../components/_side/SideComp";
-const Home = () => {
+const Home = (props: any) => {
   const [count, setCount] = useState(Math.floor(Math.random() * 10));
   const dispatch = useDispatch();
-  const countries: any[] | null = useSelector(selectCountries);
-  const [country, setCountry] = useState<any[] | null>(null);
-  const [name, setName] = useState<string | null>(null);
+  // const countries: any[] | null = useSelector(selectCountries);
+  // const [country, setCountry] = useState<any[] | null>(null);
+  // const [name, setName] = useState<string | null>(null);
   const [data, setData] = useState(null);
   const [all, setAll] = useState<any[]>([]);
   useEffect(() => {
-    const socket = socketIOClient("http://localhost:4444");
-    socket.on("toApp", (d) => {
-      setData(d);
-      let t1 = JSON.parse(JSON.stringify(all));
-      t1.push(d);
-      setAll(t1);
-    });
+    // const socket = socketIOClient("http://localhost:4444");
+    // socket.on("toApp", (d) => {
+    //   setData(d);
+    //   let t1 = JSON.parse(JSON.stringify(all));
+    //   t1.push(d);
+    //   setAll(t1);
+    // });
   }, []);
   useEffect(() => {
     let tmp = JSON.parse(JSON.stringify(all));
@@ -51,7 +51,7 @@ const Home = () => {
   return (
     <Fragment>
       <div className="home">
-        <SideComp />
+        <SideComp loc="/home" />
         <ul>
           {all.map((item, index) => {
             if (item !== null) {

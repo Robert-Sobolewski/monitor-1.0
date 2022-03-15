@@ -6,7 +6,12 @@ const socketIo = require('socket.io');
 const cors = require('cors');
 const PORT = process.env.PORT ||4000
 
-
+ export interface IInformation{
+    id:string,
+    user:string,
+    country: object|null,
+    connected:boolean,
+}
 // create server instance
 
 const app = express();
@@ -29,20 +34,31 @@ data = {user: fullname, country:Object}
 */
 
 io.on('connection',(socket:Socket) =>{
+    let data2Send:IInformation ={
+        id: socket.id,
+        user: "",
+        country:null,
+        connected:true
+    }
     console.log(`client ${socket.id} connected`);
-    io.emit('toApp',{id:socket.id, connected:true})
+    //io.emit('toApp',{id:socket.id, connected:true})
+    io.emit('toApp',data2Send)
     
     socket.on('toServer', (data:any)=>{
         console.log(`${data.user} from ${data.country?.name}`)
         data.id = socket.id
-        io.emit('toApp', data)
+        data2Send.user = data.user;
+        data2Send.country = data.country
+        io.emit('toApp', data2Send)
     })
     
     socket.once('connection',()=>{console.log('device connected')})
 
     socket.on('disconnect', ()=>{
         console.log(`client ${socket.id} disconnected`)
-        io.emit('toApp',{id:socket.id, connected:false})
+       // io.emit('toApp',{id:socket.id, connected:false})
+       data2Send.connected=false;
+       io.emit('toApp',data2Send)
     })
 })
 
