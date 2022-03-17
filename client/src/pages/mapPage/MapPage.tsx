@@ -8,14 +8,15 @@ import {
   useMapEvents,
 } from "react-leaflet";
 import { useSelector } from "react-redux";
-import { useParams } from "react-router-dom";
+import { useLocation, useParams } from "react-router-dom";
 import SideComp from "../../components/_side/SideComp";
 import { IInformation, selectData } from "../../redux/dataSlice";
 import { selectUser } from "../../redux/userSlice";
-import "./MapPage.css";
+import "./MapPage.scss";
 const MapPage = () => {
   const mapRef = useRef(null);
   const { id } = useParams();
+  const loc = useLocation();
   const users = useSelector(selectUser);
   const [position, setPosition] = useState();
   const data: IInformation[] = useSelector(selectData);
@@ -29,15 +30,17 @@ const MapPage = () => {
         map.locate();
       },
       locationfound(e) {
-        console.log(currentUser?.country.latlng);
-        setP(currentUser?.country.latlng);
-        if (null !== mapRef.current) console.log("mparef =", mapRef);
-        map.flyTo(currentUser?.country.latlng, map.getZoom());
+        if (loc.pathname != "/map") {
+          // console.log(currentUser?.country!.latlng);
+          setP(currentUser?.country.latlng);
+          if (null !== mapRef.current) console.log("mparef =", mapRef);
+          map.flyTo(currentUser?.country.latlng, map.getZoom());
+        }
       },
     });
     return p === null ? null : (
       <Marker position={p}>
-        <Popup>{`${currentUser?.user} is here`}</Popup>
+        <Popup>{`${currentUser?.user} is in ${currentUser?.country?.name}`}</Popup>
       </Marker>
     );
   }

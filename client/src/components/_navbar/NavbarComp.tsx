@@ -47,9 +47,14 @@ const NavbarComp = () => {
                   </Link>
                 </li>
                 <li className="nav-item">
-                  <a className="nav-link disabled" href="#">
-                    Link
-                  </a>
+                  <Link
+                    to="/chart"
+                    activeClassName="active"
+                    className="nav-link"
+                    aria-current="page"
+                  >
+                    Chart
+                  </Link>
                 </li>
               </ul>
             </div>

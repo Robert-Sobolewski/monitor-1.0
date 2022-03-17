@@ -2,7 +2,7 @@ import React, { Fragment } from "react";
 import { useEffect, useState } from "react";
 import socketIOClient from "socket.io-client";
 import * as io from "socket.io-client";
-import "./Home.css";
+import "./Home.scss";
 //import * as faker from "faker2";
 import faker from "faker2";
 import { useDispatch, useSelector } from "react-redux";
@@ -14,6 +14,7 @@ import {
 } from "../../redux/userSlice";
 import SideComp from "../../components/_side/SideComp";
 import { IInformation, selectData } from "../../redux/dataSlice";
+import { addChart } from "../../redux/chartSlice";
 const Home = (props: any) => {
   const [count, setCount] = useState(Math.floor(Math.random() * 10));
   const dispatch = useDispatch();
@@ -22,12 +23,11 @@ const Home = (props: any) => {
   const [all, setAll] = useState<any[]>([]);
   const servData = useSelector(selectData);
   useEffect(() => {
-    // const socket = socketIOClient("http://localhost:4444");
-    // socket.on("toApp", (d) => {
-    //   setData(d);
-    //   let t1 = JSON.parse(JSON.stringify(all));
-    //   t1.push(d);
-    //   setAll(t1);
+    if (servData.length > 0) {
+      if (servData[-1 + servData.length].message !== "") {
+        dispatch(addChart(servData[-1 + servData.length]));
+      }
+    }
     setChat(servData);
     // });
   }, [servData]);
